@@ -11,7 +11,6 @@ import { UserMaster } from '../../../Models/UserMaster';
 import { AuthService } from '../../../Services/auth.service';
 import { ConformationService } from '../../../Services/conformation.service';
 import { ConfirmationComponent } from '../../../Component/confirmation/confirmation.component';
-import { debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
 
 
 @Component({
