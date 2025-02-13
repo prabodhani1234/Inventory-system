@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ApiResponse } from '../Models/Category';
+import { ApiResponse } from '../Models/ApiResponse';
 
 @Injectable({
   providedIn: 'root'

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CategoryService } from '../../../Services/category.service';
 import { CommonModule } from '@angular/common';
 import { ButtonsComponent } from "../../../Component/buttons/buttons.component";
 import { AlertService } from '../../../Services/alert.service';
-import { ApiResponse, Category } from '../../../Models/Category';
+import { ApiResponse } from '../../../Models/ApiResponse';
+import { Category } from '../../../Models/Category';
 import { AlertComponent } from "../../../Component/alert/alert.component";
 import { UserMaster } from '../../../Models/UserMaster';
 import { AuthService } from '../../../Services/auth.service';
@@ -132,11 +133,11 @@ export class CategoryComponent implements OnInit {
   }
 
 
-  onClickOutside(event: MouseEvent) {
-    if (!(event.target as HTMLElement).closest('.dropdown-container')) {
-      this.closeDropdown();
-    }
-  }
+  // onClickOutside(event: MouseEvent) {
+  //   if (!(event.target as HTMLElement).closest('.dropdown-container')) {
+  //     this.closeDropdown();
+  //   }
+  // }
 
   isFieldInvalid(fieldName: string): boolean {
     const field = this.categoryForm.get(fieldName);
@@ -221,5 +222,22 @@ debugger;
 
   clearForm() {
     this.categoryForm.reset();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const dropdownElements = document.querySelectorAll('.dropdown-container');
+    let isClickedInside = false;
+
+    dropdownElements.forEach(element => {
+      if (element.contains(target)) {
+        isClickedInside = true;
+      }
+    });
+
+    if (!isClickedInside && this.activeDropdown) {
+      this.closeDropdown();
+    }
   }
 }

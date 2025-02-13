@@ -123,8 +123,8 @@
                 (delete)="onDeleteCategory()" (clean)="clearForm()"></app-buttons>
         </div>
 
+        <div class="fixed inset-0 -z-10" *ngIf="activeDropdown" (click)="onClickOutside($event)"></div>
     </form>
-    <div class="fixed inset-0 -z-10" *ngIf="activeDropdown" (click)="onClickOutside($event)"></div>
     <app-alert></app-alert>
     <app-confirmation></app-confirmation>
 </div>
