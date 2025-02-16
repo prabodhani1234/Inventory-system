@@ -5,6 +5,7 @@ import { HomeComponent } from './Page/Dashboard/home/home.component';
 import { DashboardComponent } from './Page/Dashboard/dashboard/dashboard.component';
 import { CategoryComponent } from './Page/MasterFile/category/category.component';
 import { authGuard } from './Guards/auth.guard';
+import { SubCategoryComponent } from './Page/MasterFile/sub-category/sub-category.component';
 
 export const routes: Routes = [
     {path:'', redirectTo:'login', pathMatch:'full'},
@@ -14,7 +15,8 @@ export const routes: Routes = [
      canActivate: [authGuard],
      children:[
             {path:'dashboard', component:DashboardComponent},
-            {path:'category', component:CategoryComponent}
+            {path:'category', component:CategoryComponent},
+            {path:'subCategory', component:SubCategoryComponent}
         ]
     }
 ];

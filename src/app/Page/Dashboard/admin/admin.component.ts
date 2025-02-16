@@ -29,7 +29,8 @@ export class AdminComponent {
     { icon: 'users', label: 'Master File', path: '#' ,
       isExpanded: false,
       children: [
-        { icon: 'users', label: 'Category', path: '/admin/category' }
+        { icon: 'users', label: 'Category', path: '/admin/category' },
+        { icon: 'users', label: 'Sub Category', path: '/admin/subCategory' }
       ]
     },
     { icon: 'settings', label: 'Settings', path: '/settings' },

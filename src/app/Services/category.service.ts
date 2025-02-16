@@ -14,6 +14,7 @@ export class CategoryService {
   constructor(private http: HttpClient) {}
 
   createCategory(category: Category): Observable<ApiResponse<Category>> {
+    debugger;
     return this.http.post<ApiResponse<Category>>(`${this.apiUrl}Category/CreateCategory`, category);
   }
 

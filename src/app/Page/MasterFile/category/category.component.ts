@@ -51,7 +51,7 @@ export class CategoryComponent implements OnInit {
       this.categoryForm = this.formBuilder.group({
         cat_Code: ['', [Validators.required]],
         cat_Name: ['', [Validators.required]],
-        CreatedUser: [this.currentUser?.firstName || '']
+        CreatedUser: [this.currentUser?.firstName]
       });
     });
 
@@ -151,7 +151,7 @@ export class CategoryComponent implements OnInit {
       const categoryData = {
         cat_Name: this.categoryForm.value.cat_Name.trim(),
         cat_Code: this.categoryForm.value.cat_Code.toUpperCase().trim(),
-        CreatedUser:this.categoryForm.value.CreatedUser
+        CreatedUser:this.currentUser?.firstName || 'Unknown'
       };
 
 debugger;
