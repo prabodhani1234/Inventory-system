@@ -76,7 +76,7 @@
                 <div class="relative">
                     <input id="loca_Code" type="text" formControlName="loca_Code" (focus)="openDropdown('code')"
                         class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
-                        [ngClass]="{'border-red-500': isFieldInvalid('cat_Code')}" autocomplete="off">
+                        [ngClass]="{'border-red-500': isFieldInvalid('loca_Code')}" autocomplete="off">
                 </div>
                 <div *ngIf="activeDropdown === 'code' && filteredCodes.length > 0"
                     class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto"
@@ -99,7 +99,7 @@
                 <div class="relative">
                     <input id="loca_Name" type="text" formControlName="loca_Name" (focus)="openDropdown('name')"
                         class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
-                        [ngClass]="{'border-red-500': isFieldInvalid('cat_Name')}" autocomplete="off">
+                        [ngClass]="{'border-red-500': isFieldInvalid('loca_Name')}" autocomplete="off">
                 </div>
                 <div *ngIf="activeDropdown === 'name' && filteredNames.length > 0"
                     class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto"
@@ -111,7 +111,7 @@
                 </div>
                 <div *ngIf="isFieldInvalid('cat_Name')" class="text-red-500 text-sm mt-1">
                     Category name is required
-                  </div>
+                </div>
             </div>
         </div>
 
@@ -264,7 +264,7 @@
 
         <div class="space-y-2">
             <app-buttons [isSubmitting]="isSubmitting" [isInvalid]="locationForm.invalid" (clean)="clearForm()"
-            (delete)="onDeleteLocation()"></app-buttons>
+                (delete)="onDeleteLocation()"></app-buttons>
         </div>
         <div class="fixed inset-0 -z-10" *ngIf="activeDropdown" (click)="onClickOutside($event)"></div>
     </form>
