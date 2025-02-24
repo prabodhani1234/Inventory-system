@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div *ngIf="isFieldInvalid('loca_Code')" class="text-red-500 text-sm mt-1">
-                    Category code is required
+                    Location code is required
                 </div>
             </div>
 
@@ -110,7 +110,7 @@
                     </div>
                 </div>
                 <div *ngIf="isFieldInvalid('cat_Name')" class="text-red-500 text-sm mt-1">
-                    Category name is required
+                    Location name is required
                 </div>
             </div>
         </div>
@@ -127,6 +127,9 @@
                         class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
                         autocomplete="off">
                 </div>
+                <div *ngIf="isFieldInvalid('contact_No')" class="text-red-500 text-sm mt-1">
+                    Contact No is required
+                </div>
             </div>
 
             <div class="w-full md:flex-1 relative dropdown-container">
@@ -138,6 +141,9 @@
                         class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
                         autocomplete="off">
                 </div>
+                <div *ngIf="isFieldInvalid('contact_Name')" class="text-red-500 text-sm mt-1">
+                    Contact Name is required
+                </div>
             </div>
 
             <div class="w-full md:flex-1 relative dropdown-container">
@@ -148,6 +154,9 @@
                     <input id="ref_Code" type="text" formControlName="ref_Code"
                         class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
                         autocomplete="off">
+                </div>
+                <div *ngIf="isFieldInvalid('ref_Code')" class="text-red-500 text-sm mt-1">
+                    Ref Code is required
                 </div>
             </div>
         </div>
@@ -163,6 +172,9 @@
                     <input id="address_1" type="text" formControlName="address_1"
                         class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
                         autocomplete="off">
+                </div>
+                <div *ngIf="isFieldInvalid('address_1')" class="text-red-500 text-sm mt-1">
+                    Address is required
                 </div>
             </div>
 
@@ -200,6 +212,9 @@
                         class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
                         autocomplete="off">
                 </div>
+                <div *ngIf="isFieldInvalid('phone_1')" class="text-red-500 text-sm mt-1">
+                    Phone No is required
+                </div>
             </div>
 
             <div class="w-full md:flex-1 relative dropdown-container">
@@ -236,6 +251,9 @@
                     <input id="email" type="text" formControlName="email"
                         class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
                         autocomplete="off">
+                </div>
+                <div *ngIf="isFieldInvalid('email')" class="text-red-500 text-sm mt-1">
+                    Email is required
                 </div>
             </div>
 
