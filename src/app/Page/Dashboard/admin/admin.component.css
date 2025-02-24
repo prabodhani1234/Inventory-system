@@ -1,0 +1,7 @@
+.sidebar-container {
+    @apply transition-all duration-300;
+    width: 16rem; 
+    
+    &:not(.expanded) {
+      width: 4rem; }
+  }

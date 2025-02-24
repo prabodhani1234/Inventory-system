@@ -6,6 +6,7 @@ import { DashboardComponent } from './Page/Dashboard/dashboard/dashboard.compone
 import { CategoryComponent } from './Page/MasterFile/category/category.component';
 import { authGuard } from './Guards/auth.guard';
 import { SubCategoryComponent } from './Page/MasterFile/sub-category/sub-category.component';
+import { LocationComponent } from './Page/MasterFile/location/location.component';
 
 export const routes: Routes = [
     {path:'', redirectTo:'login', pathMatch:'full'},
@@ -16,7 +17,8 @@ export const routes: Routes = [
      children:[
             {path:'dashboard', component:DashboardComponent},
             {path:'category', component:CategoryComponent},
-            {path:'subCategory', component:SubCategoryComponent}
+            {path:'subCategory', component:SubCategoryComponent},
+            {path:'location', component:LocationComponent}
         ]
     }
 ];

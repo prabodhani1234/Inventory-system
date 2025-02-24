@@ -26,23 +26,29 @@ export class AdminComponent {
         { icon: 'users', label: 'Dashboard', path: '/admin/dashboard' }
       ]
     },
-    { icon: 'users', label: 'Master File', path: '#' ,
+    { 
+      icon: 'users', 
+      label: 'Master File', 
+      path: '#',
       isExpanded: false,
       children: [
         { icon: 'users', label: 'Category', path: '/admin/category' },
-        { icon: 'users', label: 'Sub Category', path: '/admin/subCategory' }
+        { icon: 'users', label: 'Sub Category', path: '/admin/subCategory' },
+        { icon: 'settings', label: 'Location', path: '/admin/location' }
       ]
     },
     { icon: 'settings', label: 'Settings', path: '/settings' },
     { icon: 'help', label: 'Help', path: '/help' }
   ];
 
+  
   toggleDropdown() {
     this.isOpen = !this.isOpen;
   }
   
   toggleExpanded() {
     this.isExpanded = !this.isExpanded;
+    console.log(this.menuItems)
   }
 
   isUserMenuOpen = true;

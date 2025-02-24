@@ -1,0 +1,274 @@
+<div class="max-w-4xl p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">Location</h2>
+
+    <!-- <form [formGroup]="categoryForm" class="space-y-4">
+        <div class="mb-4 relative dropdown-container">
+            <label for="cat_Code" class="block text-sm font-medium text-gray-700 mb-1">
+                Category Code
+            </label>
+            <div class="relative">
+                <input id="cat_Code" type="text" formControlName="cat_Code"
+                    class="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    autocomplete="off">
+
+            </div>
+
+            <div class="mb-4 relative dropdown-container">
+                <label for="cat_Name" class="block text-sm font-medium text-gray-700 mb-1">
+                    Category Name
+                </label>
+                <div class="relative">
+                    <input id="cat_Name" type="text" formControlName="cat_Name"
+                        class="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        autocomplete="off">
+
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </form> -->
+
+    <!-- <form [formGroup]="categoryForm" class="space-y-4">
+        <div class="flex space-x-4">
+          <div class="flex-2 relative dropdown-container">
+            <label for="cat_Code" class="block text-sm font-medium text-gray-700 mb-1">
+              Category Code
+            </label>
+            <div class="relative">
+              <input
+                id="cat_Code"
+                type="text"
+                formControlName="cat_Code"
+                class="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                autocomplete="off">
+            </div>
+          </div>
+      
+          <div class="flex-1 relative dropdown-container">
+            <label for="cat_Name" class="block text-sm font-medium text-gray-700 mb-1">
+              Category Name
+            </label>
+            <div class="relative">
+              <input
+                id="cat_Name"
+                type="text"
+                formControlName="cat_Name"
+                class="w-full px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                autocomplete="off">
+            </div>
+          </div>
+        </div>
+      </form> -->
+
+
+    <form [formGroup]="locationForm" (ngSubmit)="postData()" class="space-y-4">
+        <!-- Container that switches between column (mobile) and row (desktop) -->
+        <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            <!-- Location Code -->
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="loca_Code" class="block text-sm font-medium text-gray-700 mb-1">
+                    Location Code <span class="text-red-700">*</span>
+                </label>
+                <div class="relative">
+                    <input id="loca_Code" type="text" formControlName="loca_Code" (focus)="openDropdown('code')"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        [ngClass]="{'border-red-500': isFieldInvalid('cat_Code')}" autocomplete="off">
+                </div>
+                <div *ngIf="activeDropdown === 'code' && filteredCodes.length > 0"
+                    class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto"
+                    (mousedown)="$event.preventDefault()">
+                    <div *ngFor="let location of filteredCodes" (click)="selectCode(location)"
+                        class="px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                        {{location.loca_Code}}
+                    </div>
+                </div>
+                <div *ngIf="isFieldInvalid('loca_Code')" class="text-red-500 text-sm mt-1">
+                    Category code is required
+                </div>
+            </div>
+
+
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="loca_Name" class="block text-sm font-medium text-gray-700 mb-1">
+                    Location Name <span class="text-red-700">*</span>
+                </label>
+                <div class="relative">
+                    <input id="loca_Name" type="text" formControlName="loca_Name" (focus)="openDropdown('name')"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        [ngClass]="{'border-red-500': isFieldInvalid('cat_Name')}" autocomplete="off">
+                </div>
+                <div *ngIf="activeDropdown === 'name' && filteredNames.length > 0"
+                    class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto"
+                    (mousedown)="$event.preventDefault()">
+                    <div *ngFor="let location of filteredNames" (click)="selectName(location)"
+                        class="px-3 py-2 hover:bg-gray-100 cursor-pointer">
+                        {{location.loca_Name}}
+                    </div>
+                </div>
+                <div *ngIf="isFieldInvalid('cat_Name')" class="text-red-500 text-sm mt-1">
+                    Category name is required
+                  </div>
+            </div>
+        </div>
+
+
+        <!--COntact-->
+        <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="contact_No" class="block text-sm font-medium text-gray-700 mb-1">
+                    Contact No <span class="text-red-700">*</span>
+                </label>
+                <div class="relative">
+                    <input id="contact_No" type="text" formControlName="contact_No"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="contact_Name" class="block text-sm font-medium text-gray-700 mb-1">
+                    Contact Name <span class="text-red-700">*</span>
+                </label>
+                <div class="relative">
+                    <input id="contact_Name" type="text" formControlName="contact_Name"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="ref_Code" class="block text-sm font-medium text-gray-700 mb-1">
+                    Ref Code <span class="text-red-700">*</span>
+                </label>
+                <div class="relative">
+                    <input id="ref_Code" type="text" formControlName="ref_Code"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+        </div>
+
+
+        <!--Address-->
+        <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="address_1" class="block text-sm font-medium text-gray-700 mb-1">
+                    Address 1 <span class="text-red-700">*</span>
+                </label>
+                <div class="relative">
+                    <input id="address_1" type="text" formControlName="address_1"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="address_2" class="block text-sm font-medium text-gray-700 mb-1">
+                    Address 2
+                </label>
+                <div class="relative">
+                    <input id="address_2" type="text" formControlName="address_2"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="address_3" class="block text-sm font-medium text-gray-700 mb-1">
+                    Address 3
+                </label>
+                <div class="relative">
+                    <input id="address_3" type="text" formControlName="address_3"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+        </div>
+
+        <!--Phone-->
+        <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="phone_1" class="block text-sm font-medium text-gray-700 mb-1">
+                    Phone 1 <span class="text-red-700">*</span>
+                </label>
+                <div class="relative">
+                    <input id="phone_1" type="text" formControlName="phone_1"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="phone_2" class="block text-sm font-medium text-gray-700 mb-1">
+                    Phone 2
+                </label>
+                <div class="relative">
+                    <input id="phone_2" type="text" formControlName="phone_2"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="phone_3" class="block text-sm font-medium text-gray-700 mb-1">
+                    Phone 3
+                </label>
+                <div class="relative">
+                    <input id="phone_3" type="text" formControlName="phone_3"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+        </div>
+
+
+        <!--EMAIL FAX WEB SITE-->
+        <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+                    Email <span class="text-red-700">*</span>
+                </label>
+                <div class="relative">
+                    <input id="email" type="text" formControlName="email"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="fax" class="block text-sm font-medium text-gray-700 mb-1">
+                    Fax
+                </label>
+                <div class="relative">
+                    <input id="fax" type="text" formControlName="fax"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="web_site" class="block text-sm font-medium text-gray-700 mb-1">
+                    Web Site
+                </label>
+                <div class="relative">
+                    <input id="web_site" type="text" formControlName="web_site"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <app-buttons [isSubmitting]="isSubmitting" [isInvalid]="locationForm.invalid" (clean)="clearForm()"
+            (delete)="onDeleteLocation()"></app-buttons>
+        </div>
+        <div class="fixed inset-0 -z-10" *ngIf="activeDropdown" (click)="onClickOutside($event)"></div>
+    </form>
+
+    <app-alert></app-alert>
+    <app-confirmation></app-confirmation>
+</div>

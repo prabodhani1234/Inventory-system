@@ -22,13 +22,94 @@
         
       
         <nav class="mt-4">
-          <a *ngFor="let item of menuItems" 
-            class="flex flex-col">
-            <div (click)="item.children ? item.isExpanded = !item.isExpanded : null"
-                [routerLink]="!item.children ? item.path : null"
-                routerLinkActive="bg-gray-700"
-                class="flex items-center px-4 py-3 hover:bg-gray-700 transition-colors cursor-pointer">
-              <svg [class]="'w-5 h-5'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+
+          <!-- Menu Items Container -->
+<!-- <div class="sidebar-container" [class.expanded]="isExpanded">
+  <div *ngFor="let item of menuItems" class="relative">
+    <a (click)="item.isExpanded = !item.isExpanded"
+       [routerLink]="item.path"
+       routerLinkActive="bg-gray-700"
+       class="flex items-center justify-between px-4 py-3 hover:bg-gray-700 cursor-pointer transition-all duration-500 ease-in-out">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 transition-colors duration-500"
+             [class.mr-3]="isExpanded"
+             viewBox="0 0 24 24" 
+             fill="none" 
+             stroke="currentColor">
+          <ng-container [ngSwitch]="item.icon">
+            <path *ngSwitchCase="'home'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            <path *ngSwitchCase="'users'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            <path *ngSwitchCase="'settings'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          </ng-container>
+        </svg>
+        <span *ngIf="isExpanded" 
+              class="transition-all duration-500">
+          {{item.label}}
+        </span>
+      </div>
+      <svg *ngIf="item.children" 
+           class="w-4 h-4 transform transition-transform duration-700 ease-in-out"
+           [class.rotate-180]="item.isExpanded"
+           [class.hidden]="!isExpanded"
+           viewBox="0 0 24 24" 
+           fill="none" 
+           stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </a>
+
+    <div *ngIf="item.children && item.isExpanded"
+         class="overflow-hidden transition-all duration-700 ease-in-out"
+         [class.bg-gray-800]="isExpanded"
+         [class.bg-gray-800]="!isExpanded">
+      <div class="transition-all duration-700 ease-in-out"
+           [class.translate-y-0]="item.isExpanded"
+           [class.-translate-y-1]="!item.isExpanded">
+        <a *ngFor="let child of item.children"
+           [routerLink]="child.path"
+           routerLinkActive="bg-gray-700"
+           class="flex items-center transition-all duration-500 ease-in-out transform hover:bg-gray-700/50"
+           [class.px-8]="isExpanded"
+           [class.px-4]="!isExpanded"
+           [class.py-3]="true"
+           [class.translate-x-0]="item.isExpanded"
+           [class.-translate-x-2]="!item.isExpanded">
+          <svg [class]="'w-5 h-5 transition-all duration-500'"
+               [class.mr-3]="isExpanded"
+               viewBox="0 0 24 24" 
+               fill="none" 
+               stroke="currentColor">
+            <ng-container [ngSwitch]="child.icon">
+              <path *ngSwitchCase="'users'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              <path *ngSwitchCase="'settings'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            </ng-container>
+          </svg>
+          <span *ngIf="isExpanded">{{child.label}}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div> -->
+          
+      <div class="sidebar-container" [class.expanded]="isExpanded">
+        <!-- Parent Menu Items -->
+        <div *ngFor="let item of menuItems" class="relative">
+          <!-- Parent Menu Item -->
+          <a (click)="item.isExpanded = !item.isExpanded"
+            [routerLink]="item.path"
+            routerLinkActive="bg-gray-700"
+            class="flex items-center justify-between px-4 py-3 hover:bg-gray-700 cursor-pointer transition-all duration-500 ease-in-out">
+            <div class="flex items-center">
+              <svg class="w-5 h-5 transition-colors duration-500"
+                  [class.mr-3]="isExpanded"
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor">
                 <ng-container [ngSwitch]="item.icon">
                   <path *ngSwitchCase="'home'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -36,72 +117,66 @@
                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                   <path *ngSwitchCase="'settings'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path *ngSwitchCase="'help'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </ng-container>
               </svg>
-              <span *ngIf="isExpanded" class="ml-4">{{item.label}}</span>
-              <svg *ngIf="item.children" 
-                  [class.rotate-180]="item.isExpanded"
-                  class="w-4 h-4 ml-auto transition-transform duration-300 ease-in-out"
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
+              <span *ngIf="isExpanded" 
+                    class="transition-all duration-500">
+                {{item.label}}
+              </span>
             </div>
-            
-            <!-- <div *ngIf="item.children" 
-                class="overflow-hidden transition-all duration-300 ease-in-out"
-                [style.maxHeight]="item.isExpanded ? '100px' : '0'">
+            <svg *ngIf="item.children" 
+                class="w-4 h-4 transform transition-transform duration-1000 ease-in-out"
+                [class.rotate-180]="item.isExpanded"
+                [class.hidden]="!isExpanded"
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </a>
+
+          <!-- Submenu with smoother animations -->
+          <div *ngIf="item.children"
+              class="overflow-hidden transition-all duration-1000 ease-in-out"
+              [style.maxHeight]="item.isExpanded ? '500px' : '0'"
+              [style.opacity]="item.isExpanded ? '1' : '0'"
+              [class.bg-gray-800]="isExpanded"
+              [class.bg-gray-800]="!isExpanded">
+            <div class="transform transition-all duration-1000 ease-in-out"
+                [style.transform]="item.isExpanded ? 'translateY(0)' : 'translateY(-10px)'"
+                [style.opacity]="item.isExpanded ? '1' : '0'">
               <a *ngFor="let child of item.children"
                 [routerLink]="child.path"
                 routerLinkActive="bg-gray-700"
-                class="flex items-center px-4 py-3 hover:bg-gray-700 transition-colors">
-                <span *ngIf="isExpanded" class="ml-9">{{child.label}}</span>
-              </a>
-            </div> -->
-            <div *ngIf="item.children"
-              class="overflow-hidden transition-all duration-300 ease-in-out"
-              [style.maxHeight]="item.isExpanded ? '100px' : '0'">
-              <a *ngFor="let child of item.children " 
-                [routerLink]="child.path"
-                routerLinkActive="bg-gray-700"
-                class="flex items-center px-4 py-3 hover:bg-gray-700 transition-colors">
-                <svg *ngIf="child.icon" [class]="'w-5 h-5 mr-3'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                class="flex items-center transition-all duration-1000 ease-in-out hover:bg-gray-700/50"
+                [class.px-8]="isExpanded"
+                [class.px-4]="!isExpanded"
+                [class.py-3]="true">
+                <svg [class]="'w-5 h-5 transition-all duration-1000'"
+                    [class.mr-3]="isExpanded"
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor">
                   <ng-container [ngSwitch]="child.icon">
-                    <path *ngSwitchCase="'home'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     <path *ngSwitchCase="'users'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                     <path *ngSwitchCase="'settings'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path *ngSwitchCase="'help'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </ng-container>
                 </svg>
-                <span>{{child.label}}</span>
+                <span *ngIf="isExpanded" 
+                      class="transition-all duration-1000">
+                  {{child.label}}
+                </span>
               </a>
             </div>
-          </a>
-          <!-- <a *ngFor="let item of menuItems" 
-             [routerLink]="item.path"
-             routerLinkActive="bg-gray-700"
-             class="flex items-center px-4 py-3 hover:bg-gray-700 transition-colors">
-            <svg [class]="'w-5 h-5'" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <ng-container [ngSwitch]="item.icon">
-                <path *ngSwitchCase="'home'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                <path *ngSwitchCase="'users'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                <path *ngSwitchCase="'settings'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                <path *ngSwitchCase="'help'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </ng-container>
-            </svg>
-            <span *ngIf="isExpanded" class="ml-4">{{item.label}}</span>
-          </a> -->
+          </div>
+        </div>
+      </div>
+
+
+
+
         </nav>
       </div> 
     </div>
