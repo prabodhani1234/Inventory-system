@@ -7,14 +7,13 @@ import { environment } from '../../environments/environment.development';
 import { Auth } from '../Models/Auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private userSource = new ReplaySubject<UserMaster | null>(1);
   user$ = this.userSource.asObservable();
-  
-  private apiUrl = 'http://localhost:5240/api/'; 
+
+  private apiUrl = 'http://localhost:5240/api/';
 
   constructor(private http: HttpClient, private router: Router) {
     const storedUser = localStorage.getItem(environment.userKey);
@@ -32,9 +31,6 @@ export class AuthService {
   // getCategory(): Observable<Customer[]> {
   //   return this.http.get<Customer[]>(this.apiUrl + 'Customer/Create');
   // }
-  
-  
-  
 
   //First
   // login(model: User) {
@@ -50,17 +46,11 @@ export class AuthService {
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + jwt);
 
-    return this.http.get<UserMaster>(`${this.apiUrl}account/refresh-user-token`, {headers, withCredentials: true}).pipe(
-      map((user: UserMaster) => {
-        if (user) {
-          this.setUser(user);
-        }
+    return this.http
+      .get<UserMaster>(`${this.apiUrl}account/refresh-user-token`, {
+        headers,
+        withCredentials: true,
       })
-    )
-  }
-
-    login(model: Auth) : Observable<void>{
-      return this.http.post<UserMaster>(`${this.apiUrl}account/login`,model)
       .pipe(
         map((user: UserMaster) => {
           if (user) {
@@ -70,11 +60,22 @@ export class AuthService {
       );
   }
 
-  logout(){
+  login(model: Auth): Observable<void> {
+    return this.http
+      .post<UserMaster>(`${this.apiUrl}account/login`, model)
+      .pipe(
+        map((user: UserMaster) => {
+          if (user) {
+            this.setUser(user);
+          }
+        })
+      );
+  }
+
+  logout() {
     localStorage.removeItem(environment.userKey);
     this.userSource.next(null);
     this.router.navigate(['']);
-
   }
 
   getJWT() {
@@ -87,9 +88,8 @@ export class AuthService {
     }
   }
 
-  private setUser (user :UserMaster): void{
+  private setUser(user: UserMaster): void {
     localStorage.setItem(environment.userKey, JSON.stringify(user));
     this.userSource.next(user);
   }
-
 }

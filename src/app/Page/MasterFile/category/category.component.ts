@@ -1,24 +1,34 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CategoryService } from '../../../Services/category.service';
 import { CommonModule } from '@angular/common';
-import { ButtonsComponent } from "../../../Component/buttons/buttons.component";
+import { ButtonsComponent } from '../../../Component/buttons/buttons.component';
 import { AlertService } from '../../../Services/alert.service';
 import { ApiResponse } from '../../../Models/ApiResponse';
 import { Category } from '../../../Models/Category';
-import { AlertComponent } from "../../../Component/alert/alert.component";
+import { AlertComponent } from '../../../Component/alert/alert.component';
 import { UserMaster } from '../../../Models/UserMaster';
 import { AuthService } from '../../../Services/auth.service';
 import { ConformationService } from '../../../Services/conformation.service';
 import { ConfirmationComponent } from '../../../Component/confirmation/confirmation.component';
 
-
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonsComponent, AlertComponent, ConfirmationComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ButtonsComponent,
+    AlertComponent,
+    ConfirmationComponent,
+  ],
   templateUrl: './category.component.html',
-  styleUrl: './category.component.css'
+  styleUrl: './category.component.css',
 })
 export class CategoryComponent implements OnInit {
   public categoryForm!: FormGroup;
@@ -44,33 +54,30 @@ export class CategoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
-    this.authService.user$.subscribe(user => {
+    this.authService.user$.subscribe((user) => {
       this.currentUser = user;
 
       this.categoryForm = this.formBuilder.group({
         cat_Code: ['', [Validators.required]],
         cat_Name: ['', [Validators.required]],
-        CreatedUser: [this.currentUser?.firstName]
+        CreatedUser: [this.currentUser?.firstName],
       });
     });
 
     this.loadCategories();
     this.closeDropdown();
     this.AutoComplete();
-    
   }
 
-  AutoComplete(){
-    this.categoryForm.get('cat_Code')?.valueChanges.subscribe(value => {
+  AutoComplete() {
+    this.categoryForm.get('cat_Code')?.valueChanges.subscribe((value) => {
       this.filterCodes(value);
     });
 
-    this.categoryForm.get('cat_Name')?.valueChanges.subscribe(value => {
+    this.categoryForm.get('cat_Name')?.valueChanges.subscribe((value) => {
       this.filterNames(value);
     });
   }
-
 
   loadCategories() {
     this.categoryService.getCategories(0, true).subscribe({
@@ -83,7 +90,7 @@ export class CategoryComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading categories:', error);
-      }
+      },
     });
   }
 
@@ -91,7 +98,7 @@ export class CategoryComponent implements OnInit {
     if (!value) {
       this.filteredCodes = this.categories;
     } else {
-      this.filteredCodes = this.categories.filter(category => 
+      this.filteredCodes = this.categories.filter((category) =>
         category.cat_Code.toLowerCase().includes(value.toLowerCase())
       );
     }
@@ -101,7 +108,7 @@ export class CategoryComponent implements OnInit {
     if (!value) {
       this.filteredNames = this.categories;
     } else {
-      this.filteredNames = this.categories.filter(category => 
+      this.filteredNames = this.categories.filter((category) =>
         category.cat_Name.toLowerCase().includes(value.toLowerCase())
       );
     }
@@ -118,7 +125,7 @@ export class CategoryComponent implements OnInit {
   selectCode(category: Category) {
     this.categoryForm.patchValue({
       cat_Code: category.cat_Code,
-      cat_Name: category.cat_Name
+      cat_Name: category.cat_Name,
     });
     this.closeDropdown();
   }
@@ -126,11 +133,10 @@ export class CategoryComponent implements OnInit {
   selectName(category: Category) {
     this.categoryForm.patchValue({
       cat_Code: category.cat_Code,
-      cat_Name: category.cat_Name
+      cat_Name: category.cat_Name,
     });
     this.closeDropdown();
   }
-
 
   // onClickOutside(event: MouseEvent) {
   //   if (!(event.target as HTMLElement).closest('.dropdown-container')) {
@@ -144,22 +150,22 @@ export class CategoryComponent implements OnInit {
   }
 
   postData(): void {
-
     if (this.categoryForm.invalid) return;
-    
+
     if (this.categoryForm.valid) {
       const categoryData = {
         cat_Name: this.categoryForm.value.cat_Name.trim(),
         cat_Code: this.categoryForm.value.cat_Code.toUpperCase().trim(),
-        CreatedUser:this.currentUser?.firstName || 'Unknown'
+        CreatedUser: this.currentUser?.firstName || 'Unknown',
       };
 
-debugger;
+      debugger;
       this.categoryService.createCategory(categoryData).subscribe({
         next: (response: ApiResponse<any>) => {
           this.alertService.showAlert(response);
           if (response.isSuccess) {
-            this.successMessage = response.message || 'Category created successfully!';
+            this.successMessage =
+              response.message || 'Category created successfully!';
             this.categoryForm.reset();
             this.loadCategories();
             this.closeDropdown();
@@ -172,33 +178,33 @@ debugger;
           this.alertService.showAlert({
             isSuccess: false,
             message: error.error.message || 'Failed to create category',
-            data: null
+            data: null,
           });
-        }
+        },
       });
     } else {
-      console.error("Form is invalid");
+      console.error('Form is invalid');
     }
   }
-
 
   async onDeleteCategory() {
     const confirmed = await this.confirmationService.show({
       title: 'Delete Category',
       message: 'Are you sure you want to delete this category?',
       confirmText: 'Yes, Delete',
-      cancelText: 'Cancel'
+      cancelText: 'Cancel',
     });
-    
+
     const catCode = this.categoryForm.value.cat_Code?.toUpperCase().trim();
     debugger;
     if (confirmed) {
       this.categoryService.deleteCategories(catCode).subscribe({
         next: (response: ApiResponse<any>) => {
           this.alertService.showAlert(response);
-          
+
           if (response.isSuccess) {
-            this.successMessage = response.message || 'Category deleted successfully!';
+            this.successMessage =
+              response.message || 'Category deleted successfully!';
             this.categoryForm.reset();
             this.loadCategories();
             this.closeDropdown();
@@ -210,12 +216,10 @@ debugger;
           this.alertService.showAlert({
             isSuccess: false,
             message: error.error.message || 'Failed to Delete category',
-            data: null
+            data: null,
           });
-        }
-      }
-        
-      );
+        },
+      });
     }
   }
 
@@ -229,7 +233,7 @@ debugger;
     const dropdownElements = document.querySelectorAll('.dropdown-container');
     let isClickedInside = false;
 
-    dropdownElements.forEach(element => {
+    dropdownElements.forEach((element) => {
       if (element.contains(target)) {
         isClickedInside = true;
       }

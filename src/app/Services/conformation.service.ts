@@ -9,18 +9,19 @@ export interface ConfirmationDialog {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConformationService {
-
-  private confirmationSubject = new BehaviorSubject<ConfirmationDialog | null>(null);
+  private confirmationSubject = new BehaviorSubject<ConfirmationDialog | null>(
+    null
+  );
   confirmation$ = this.confirmationSubject.asObservable();
-  
+
   private resolveCallback!: (value: boolean) => void;
 
   show(options: ConfirmationDialog): Promise<boolean> {
     this.confirmationSubject.next(options);
-    
+
     return new Promise((resolve) => {
       this.resolveCallback = resolve;
     });

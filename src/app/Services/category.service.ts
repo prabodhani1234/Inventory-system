@@ -5,19 +5,20 @@ import { ApiResponse } from '../Models/ApiResponse';
 import { catchError, Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoryService {
-
   private apiUrl = 'http://localhost:5240/api/'; // Replace with your actual API endpoint
 
   constructor(private http: HttpClient) {}
 
   createCategory(category: Category): Observable<ApiResponse<Category>> {
     debugger;
-    return this.http.post<ApiResponse<Category>>(`${this.apiUrl}Category/CreateCategory`, category);
+    return this.http.post<ApiResponse<Category>>(
+      `${this.apiUrl}Category/CreateCategory`,
+      category
+    );
   }
-
 
   // getCategories(): Observable<Category[]> {
   //   return this.http.get<Category[]>(`${this.apiUrl}Category/CreateCategory`);
@@ -29,26 +30,33 @@ export class CategoryService {
   //   return this.http.delete<void>(`${this.apiUrl}Category/DeleteCategory/?cat_Code=${catCode}`);
   // }
   deleteCategories(catCode: string): Observable<ApiResponse<any>> {
-    return this.http.delete<ApiResponse<any>>(
-      `${this.apiUrl}Category/DeleteCategory/?cat_Code=${catCode}`
-    ).pipe(
-      catchError((error) => {
-        throw error;
-      })
-    );
+    return this.http
+      .delete<ApiResponse<any>>(
+        `${this.apiUrl}Category/DeleteCategory/?cat_Code=${catCode}`
+      )
+      .pipe(
+        catchError((error) => {
+          throw error;
+        })
+      );
   }
-  
+
   // deleteCategories(cat_Code: any): Observable<void> {
   //   debugger;
   //   return this.http.delete<void>(`${this.apiUrl}Category/DeleteCategory/?cat_Code=${cat_Code}`);
   // }
 
-  getCategories(type: number = 0, isActive: boolean = true): Observable<ApiResponse<Category[]>> {
+  getCategories(
+    type: number = 0,
+    isActive: boolean = true
+  ): Observable<ApiResponse<Category[]>> {
     const params = new HttpParams()
       .set('type', type.toString())
       .set('isActive', isActive.toString());
-    
-    return this.http.get<ApiResponse<Category[]>>(`${this.apiUrl}Category/GetAllCategories`, { params });
+
+    return this.http.get<ApiResponse<Category[]>>(
+      `${this.apiUrl}Category/GetAllCategories`,
+      { params }
+    );
   }
-  
 }

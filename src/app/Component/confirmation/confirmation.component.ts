@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './confirmation.component.html',
-  styleUrl: './confirmation.component.css'
+  styleUrl: './confirmation.component.css',
 })
 export class ConfirmationComponent {
   constructor(public confirmationService: ConformationService) {}
