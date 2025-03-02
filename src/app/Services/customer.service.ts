@@ -1,29 +1,29 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable } from 'rxjs';
 import { ApiResponse } from '../Models/ApiResponse';
-import { Supplier } from '../Models/Supplier';
+import { catchError, Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Customer } from '../Models/Customer';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SupplierService {
+export class CustomerService {
   private apiUrl = 'http://localhost:5240/api/'; // Replace with your actual API endpoint
 
   constructor(private http: HttpClient) {}
 
-  createSupplier(supplier: Supplier): Observable<ApiResponse<Supplier>> {
+  createCustomers(customer: Customer): Observable<ApiResponse<Customer>> {
     debugger;
-    return this.http.post<ApiResponse<Supplier>>(
+    return this.http.post<ApiResponse<Customer>>(
       `${this.apiUrl}Location/CreateLocation`,
-      supplier
+      customer
     );
   }
 
-  deleteSuppliers(suppCode: string): Observable<ApiResponse<any>> {
+  deleteCustomers(custCode: string): Observable<ApiResponse<any>> {
     return this.http
       .delete<ApiResponse<any>>(
-        `${this.apiUrl}Location/DeleteLocation/?loca_Code=${suppCode}`
+        `${this.apiUrl}Location/DeleteLocation/?loca_Code=${custCode}`
       )
       .pipe(
         catchError((error) => {
@@ -32,7 +32,7 @@ export class SupplierService {
       );
   }
 
-  getSuppliers(
+  getCustomers(
     type: number = 0,
     isActive: boolean = true
   ): Observable<ApiResponse<Location[]>> {

@@ -1,54 +1,54 @@
 <div class="max-w-4xl p-6 bg-white rounded-lg shadow-md">
-    <h2 class="text-2xl font-bold mb-6 text-gray-800">Supplier</h2>
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">Customer</h2>
 
 
 
-    <form [formGroup]="supplierForm" (ngSubmit)="postData()" class="space-y-4">
+    <form [formGroup]="customerForm" (ngSubmit)="postData()" class="space-y-4">
         <!-- Container that switches between column (mobile) and row (desktop) -->
         <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
             <!-- Location Code -->
             <div class="w-full md:flex-1 relative dropdown-container">
-                <label for="supp_Code" class="block text-sm font-medium text-gray-700 mb-1">
-                    Supplier Code <span class="text-red-700">*</span>
+                <label for="cust_Code" class="block text-sm font-medium text-gray-700 mb-1">
+                    Customer Code <span class="text-red-700">*</span>
                 </label>
                 <div class="relative">
-                    <input id="supp_Code" type="text" formControlName="supp_Code" (focus)="openDropdown('code')"
+                    <input id="cust_Code" type="text" formControlName="cust_Code" (focus)="openDropdown('code')"
                         class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
-                        [ngClass]="{'border-red-500': isFieldInvalid('supp_Code')}" autocomplete="off">
+                        [ngClass]="{'border-red-500': isFieldInvalid('cust_Code')}" autocomplete="off">
                 </div>
                 <div *ngIf="activeDropdown === 'code' && filteredCodes.length > 0"
                     class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto"
                     (mousedown)="$event.preventDefault()">
-                    <div *ngFor="let supplier of filteredCodes" (click)="selectCode(supplier)"
+                    <div *ngFor="let customer of filteredCodes" (click)="selectCode(customer)"
                         class="px-3 py-2 hover:bg-gray-100 cursor-pointer">
-                        {{supplier.supp_Code}}
+                        {{customer.cust_Code}}
                     </div>
                 </div>
-                <div *ngIf="isFieldInvalid('supp_Code')" class="text-red-500 text-sm mt-1">
-                    Supplier code is required
+                <div *ngIf="isFieldInvalid('cust_Code')" class="text-red-500 text-sm mt-1">
+                    Customer code is required
                 </div>
             </div>
 
 
             <div class="w-full md:flex-1 relative dropdown-container">
-                <label for="supp_Name" class="block text-sm font-medium text-gray-700 mb-1">
-                    Supplier Name <span class="text-red-700">*</span>
+                <label for="cust_Name" class="block text-sm font-medium text-gray-700 mb-1">
+                    Customer Name <span class="text-red-700">*</span>
                 </label>
                 <div class="relative">
-                    <input id="supp_Name" type="text" formControlName="supp_Name" (focus)="openDropdown('name')"
+                    <input id="cust_Name" type="text" formControlName="cust_Name" (focus)="openDropdown('name')"
                         class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
-                        [ngClass]="{'border-red-500': isFieldInvalid('supp_Name')}" autocomplete="off">
+                        [ngClass]="{'border-red-500': isFieldInvalid('cust_Name')}" autocomplete="off">
                 </div>
                 <div *ngIf="activeDropdown === 'name' && filteredNames.length > 0"
                     class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-48 overflow-y-auto"
                     (mousedown)="$event.preventDefault()">
-                    <div *ngFor="let supplier of filteredNames" (click)="selectName(supplier)"
+                    <div *ngFor="let customer of filteredNames" (click)="selectName(customer)"
                         class="px-3 py-2 hover:bg-gray-100 cursor-pointer">
-                        {{supplier.supp_Name}}
+                        {{customer.cust_Name}}
                     </div>
                 </div>
-                <div *ngIf="isFieldInvalid('supp_Name')" class="text-red-500 text-sm mt-1">
-                    Supplier name is required
+                <div *ngIf="isFieldInvalid('cust_Name')" class="text-red-500 text-sm mt-1">
+                    Customer name is required
                 </div>
             </div>
         </div>
@@ -219,7 +219,7 @@
         </div>
 
         <div class="space-y-2">
-            <app-buttons [isSubmitting]="isSubmitting" [isInvalid]="supplierForm.invalid" (clean)="clearForm()"
+            <app-buttons [isSubmitting]="isSubmitting" [isInvalid]="customerForm.invalid" (clean)="clearForm()"
                 (delete)="onDeleteLocation()"></app-buttons>
         </div>
         <div class="fixed inset-0 -z-10" *ngIf="activeDropdown" (click)="onClickOutside($event)"></div>

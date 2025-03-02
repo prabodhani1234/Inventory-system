@@ -35,7 +35,8 @@ export class AdminComponent {
         { icon: 'users', label: 'Category', path: '/admin/category' },
         { icon: 'users', label: 'Sub Category', path: '/admin/subCategory' },
         { icon: 'settings', label: 'Location', path: '/admin/location' },
-        { icon: 'users', label: 'Supplier', path: '/admin/supplier' }
+        { icon: 'users', label: 'Supplier', path: '/admin/supplier' },
+        { icon: 'settings', label: 'Customer', path: '/admin/customer' }
       ]
     },
     { icon: 'settings', label: 'Settings', path: '/settings' },

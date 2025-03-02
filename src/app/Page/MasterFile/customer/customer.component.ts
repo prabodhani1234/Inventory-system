@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -5,20 +6,19 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { UserMaster } from '../../../Models/UserMaster';
-import { Supplier } from '../../../Models/Supplier';
-import { AuthService } from '../../../Services/auth.service';
-import { AlertService } from '../../../Services/alert.service';
-import { ConformationService } from '../../../Services/conformation.service';
-import { CommonModule } from '@angular/common';
 import { ButtonsComponent } from '../../../Component/buttons/buttons.component';
 import { AlertComponent } from '../../../Component/alert/alert.component';
 import { ConfirmationComponent } from '../../../Component/confirmation/confirmation.component';
-import { SupplierService } from '../../../Services/supplier.service';
+import { UserMaster } from '../../../Models/UserMaster';
+import { Customer } from '../../../Models/Customer';
+import { AuthService } from '../../../Services/auth.service';
+import { AlertService } from '../../../Services/alert.service';
+import { ConformationService } from '../../../Services/conformation.service';
+import { CustomerService } from '../../../Services/customer.service';
 import { ApiResponse } from '../../../Models/ApiResponse';
 
 @Component({
-  selector: 'app-supplier',
+  selector: 'app-customer',
   standalone: true,
   imports: [
     CommonModule,
@@ -27,27 +27,27 @@ import { ApiResponse } from '../../../Models/ApiResponse';
     AlertComponent,
     ConfirmationComponent,
   ],
-  templateUrl: './supplier.component.html',
-  styleUrl: './supplier.component.css',
+  templateUrl: './customer.component.html',
+  styleUrl: './customer.component.css',
 })
-export class SupplierComponent implements OnInit {
-  public supplierForm!: FormGroup;
+export class CustomerComponent implements OnInit {
+  public customerForm!: FormGroup;
   isSubmitting = false;
   successMessage = '';
   errorMessage = '';
   currentUser: UserMaster | null = null;
-  suppliers: Supplier[] = [];
+  customers: Customer[] = [];
   showCodeDropdown = false;
   showNameDropdown = false;
   activeDropdown: 'code' | 'name' | null = null;
-  filteredCodes: Supplier[] = [];
-  filteredNames: Supplier[] = [];
+  filteredCodes: Customer[] = [];
+  filteredNames: Customer[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private alertService: AlertService,
-    private supplierService: SupplierService,
+    private customerService: CustomerService,
     private confirmationService: ConformationService
   ) {}
 
@@ -55,12 +55,13 @@ export class SupplierComponent implements OnInit {
     this.authService.user$.subscribe((user) => {
       this.currentUser = user;
 
-      this.supplierForm = this.formBuilder.group({
-        supp_Code: ['', [Validators.required]],
-        supp_Name: ['', [Validators.required]],
+      this.customerForm = this.formBuilder.group({
+        cust_Code: ['', [Validators.required]],
+        cust_Name: ['', [Validators.required]],
         contact_No: ['', [Validators.required]],
         contact_Name: ['', [Validators.required]],
         country: ['', [Validators.required]],
+        region: ['', [Validators.required]],
         address_1: ['', [Validators.required]],
         address_2: [''],
         address_3: [''],
@@ -70,34 +71,36 @@ export class SupplierComponent implements OnInit {
         email: ['', [Validators.required]],
         fax: [''],
         web_site: [''],
+        creditLimit: ['', [Validators.required]],
+        creditPeriod: ['', [Validators.required]],
         state: [1],
         CreatedUser: [this.currentUser?.firstName],
       });
     });
 
-    this.loadSuppliers();
+    this.loadCustomers();
     this.AutoComplete();
     this.closeDropdown();
   }
 
   AutoComplete() {
-    this.supplierForm.get('supp_Code')?.valueChanges.subscribe((value) => {
+    this.customerForm.get('cust_Code')?.valueChanges.subscribe((value) => {
       this.filterCodes(value);
     });
 
-    this.supplierForm.get('supp_Name')?.valueChanges.subscribe((value) => {
+    this.customerForm.get('cust_Name')?.valueChanges.subscribe((value) => {
       this.filterNames(value);
     });
   }
 
-  loadSuppliers() {
-    this.supplierService.getSuppliers(0, true).subscribe({
+  loadCustomers() {
+    this.customerService.getCustomers(0, true).subscribe({
       next: (response: any) => {
         if (response && response.data) {
           debugger;
-          this.suppliers = response.data;
-          this.filteredCodes = this.suppliers;
-          this.filteredNames = this.suppliers;
+          this.customers = response.data;
+          this.filteredCodes = this.customers;
+          this.filteredNames = this.customers;
           console.log(this.filteredCodes);
         }
       },
@@ -109,20 +112,20 @@ export class SupplierComponent implements OnInit {
 
   filterCodes(value: string) {
     if (!value) {
-      this.filteredCodes = this.suppliers;
+      this.filteredCodes = this.customers;
     } else {
-      this.filteredCodes = this.suppliers.filter((suppliers) =>
-        suppliers.supp_Code.toLowerCase().includes(value.toLowerCase())
+      this.filteredCodes = this.customers.filter((customers) =>
+        customers.cust_Code.toLowerCase().includes(value.toLowerCase())
       );
     }
   }
 
   filterNames(value: string) {
     if (!value) {
-      this.filteredNames = this.suppliers;
+      this.filteredNames = this.customers;
     } else {
-      this.filteredNames = this.suppliers.filter((suppliers) =>
-        suppliers.supp_Name.toLowerCase().includes(value.toLowerCase())
+      this.filteredNames = this.customers.filter((customers) =>
+        customers.cust_Name.toLowerCase().includes(value.toLowerCase())
       );
     }
   }
@@ -135,82 +138,91 @@ export class SupplierComponent implements OnInit {
     this.activeDropdown = null;
   }
 
-  selectCode(supplier: Supplier) {
-    this.supplierForm.patchValue({
-      supp_Code: supplier.supp_Code,
-      supp_Name: supplier.supp_Name,
-      contact_No: supplier.contact_No,
-      contact_Name: supplier.contact_Name,
-      country: supplier.country,
-      address_1: supplier.address1,
-      address_2: supplier.address2,
-      address_3: supplier.address3,
-      phone_1: supplier.phone1,
-      phone_2: supplier.phone2,
-      phone_3: supplier.phone3,
-      email: supplier.email,
-      fax: supplier.fax,
-      web_site: supplier.web_site,
+  selectCode(customer: Customer) {
+    this.customerForm.patchValue({
+      cust_Code: customer.cust_Code,
+      cust_Name: customer.cust_Name,
+      contact_No: customer.contact_No,
+      contact_Name: customer.contact_Name,
+      country: customer.country,
+      region: customer.region,
+      address_1: customer.address1,
+      address_2: customer.address2,
+      address_3: customer.address3,
+      phone_1: customer.phone1,
+      phone_2: customer.phone2,
+      phone_3: customer.phone3,
+      email: customer.email,
+      fax: customer.fax,
+      web_site: customer.web_site,
+      creditLimit: customer.creditLimit,
+      creditPeriod: customer.creditPeriod,
     });
     this.closeDropdown();
   }
 
-  selectName(supplier: Supplier) {
-    this.supplierForm.patchValue({
-      supp_Code: supplier.supp_Code,
-      supp_Name: supplier.supp_Name,
-      contact_No: supplier.contact_No,
-      contact_Name: supplier.contact_Name,
-      country: supplier.country,
-      address_1: supplier.address1,
-      address_2: supplier.address2,
-      address_3: supplier.address3,
-      phone_1: supplier.phone1,
-      phone_2: supplier.phone2,
-      phone_3: supplier.phone3,
-      email: supplier.email,
-      fax: supplier.fax,
-      web_site: supplier.web_site,
+  selectName(customer: Customer) {
+    this.customerForm.patchValue({
+      cust_Code: customer.cust_Code,
+      cust_Name: customer.cust_Name,
+      contact_No: customer.contact_No,
+      contact_Name: customer.contact_Name,
+      country: customer.country,
+      region: customer.region,
+      address_1: customer.address1,
+      address_2: customer.address2,
+      address_3: customer.address3,
+      phone_1: customer.phone1,
+      phone_2: customer.phone2,
+      phone_3: customer.phone3,
+      email: customer.email,
+      fax: customer.fax,
+      web_site: customer.web_site,
+      creditLimit: customer.creditLimit,
+      creditPeriod: customer.creditPeriod,
     });
     this.closeDropdown();
   }
 
   isFieldInvalid(fieldName: string): boolean {
-    const field = this.supplierForm.get(fieldName);
+    const field = this.customerForm.get(fieldName);
     return field ? field.invalid && (field.dirty || field.touched) : false;
   }
 
   postData(): void {
-    if (this.supplierForm.invalid) return;
+    if (this.customerForm.invalid) return;
 
-    if (this.supplierForm.valid) {
-      const supplierData = {
-        supp_Name: this.supplierForm.value.supp_Name.trim(),
-        supp_Code: this.supplierForm.value.supp_Code.toUpperCase().trim(),
-        contact_No: this.supplierForm.value.contact_No.trim(),
-        contact_Name: this.supplierForm.value.contact_Name.trim(),
-        country: this.supplierForm.value.country.trim(),
-        address1: this.supplierForm.value.address_1.trim(),
-        address2: this.supplierForm.value.address_2.trim(),
-        address3: this.supplierForm.value.address_3.trim(),
-        phone1: this.supplierForm.value.phone_1.trim(),
-        phone2: this.supplierForm.value.phone_2.trim(),
-        phone3: this.supplierForm.value.phone_3.trim(),
-        email: this.supplierForm.value.email.trim(),
-        fax: this.supplierForm.value.fax.trim(),
-        web_site: this.supplierForm.value.web_site.trim(),
-        State: this.supplierForm.value.state,
+    if (this.customerForm.valid) {
+      const customerData = {
+        cust_Name: this.customerForm.value.cust_Name.trim(),
+        cust_Code: this.customerForm.value.cust_Code.toUpperCase().trim(),
+        contact_No: this.customerForm.value.contact_No.trim(),
+        contact_Name: this.customerForm.value.contact_Name.trim(),
+        country: this.customerForm.value.country.trim(),
+        region: this.customerForm.value.region.trim(),
+        address1: this.customerForm.value.address_1.trim(),
+        address2: this.customerForm.value.address_2.trim(),
+        address3: this.customerForm.value.address_3.trim(),
+        phone1: this.customerForm.value.phone_1.trim(),
+        phone2: this.customerForm.value.phone_2.trim(),
+        phone3: this.customerForm.value.phone_3.trim(),
+        email: this.customerForm.value.email.trim(),
+        fax: this.customerForm.value.fax.trim(),
+        web_site: this.customerForm.value.web_site.trim(),
+        creditLimit: this.customerForm.value.creditLimit.trim(),
+        creditPeriod: this.customerForm.value.creditPeriod.trim(),
+        State: this.customerForm.value.state,
         CreatedUser: this.currentUser?.firstName || 'Unknown',
       };
 
       debugger;
-      this.supplierService.createSupplier(supplierData).subscribe({
+      this.customerService.createCustomers(customerData).subscribe({
         next: (response: ApiResponse<any>) => {
           this.alertService.showAlert(response);
           if (response.isSuccess) {
             this.successMessage =
               response.message || 'Location created successfully!';
-            this.supplierForm.reset();
+            this.customerForm.reset();
           } else {
             this.errorMessage = response.message || 'Failed to create Location';
           }
@@ -237,17 +249,17 @@ export class SupplierComponent implements OnInit {
       cancelText: 'Cancel',
     });
 
-    const supp_code = this.supplierForm.value.supp_Code?.toUpperCase().trim();
+    const supp_code = this.customerForm.value.supp_Code?.toUpperCase().trim();
     debugger;
     if (confirmed) {
-      this.supplierService.deleteSuppliers(supp_code).subscribe({
+      this.customerService.deleteCustomers(supp_code).subscribe({
         next: (response: ApiResponse<any>) => {
           this.alertService.showAlert(response);
 
           if (response.isSuccess) {
             this.successMessage =
               response.message || 'Location deleted successfully!';
-            this.supplierForm.reset();
+            this.customerForm.reset();
             // this.loadCategories();
             // this.closeDropdown();
           } else {
@@ -266,7 +278,7 @@ export class SupplierComponent implements OnInit {
   }
 
   clearForm() {
-    this.supplierForm.reset();
+    this.customerForm.reset();
   }
 
   @HostListener('document:click', ['$event'])
