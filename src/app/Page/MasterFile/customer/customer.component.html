@@ -94,7 +94,7 @@
                         autocomplete="off">
                 </div>
                 <div *ngIf="isFieldInvalid('country')" class="text-red-500 text-sm mt-1">
-                    Ref Code is required
+                    Country is required
                 </div>
             </div>
         </div>
@@ -212,6 +212,46 @@
                 </label>
                 <div class="relative">
                     <input id="web_site" type="text" formControlName="web_site"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0">
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="creditLimit" class="block text-sm font-medium text-gray-700 mb-1">
+                    Credit Limit <span class="text-red-700">*</span>
+                </label>
+                <div class="relative">
+                    <input id="creditLimit" type="text" formControlName="creditLimit"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+                <div *ngIf="isFieldInvalid('creditLimit')" class="text-red-500 text-sm mt-1">
+                    Email is required
+                </div>
+            </div>
+
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="creditPeriod" class="block text-sm font-medium text-gray-700 mb-1">
+                    Credit Period
+                </label>
+                <div class="relative">
+                    <input id="creditPeriod" type="text" formControlName="creditPeriod"
+                        class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
+                        autocomplete="off">
+                </div>
+            </div>
+
+            <div class="w-full md:flex-1 relative dropdown-container">
+                <label for="region" class="block text-sm font-medium text-gray-700 mb-1">
+                    Region
+                </label>
+                <div class="relative">
+                    <input id="region" type="text" formControlName="region"
                         class="w-full px-3 py-2 md:py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-base md:text-sm"
                         autocomplete="off">
                 </div>
